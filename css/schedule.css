@@ -1,0 +1,62 @@
+.brand-name {
+	margin: 0;
+	padding-top: 0;
+}
+.company-branding {
+	color: #FF9900;
+	font-weight: 900;
+}
+html{
+  position: relative;
+  min-height: 100%;
+}
+body {
+  margin-bottom: 60px;
+}
+/* Wrapper for page content to push down footer */
+#wrapContent {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  /* Negative indent footer by it's height */
+  margin: 0 auto -60px;
+  padding: 0 0 60px;
+}
+/* Set the fixed height of the footer here */
+#footer {
+  height: 60px;
+  background-color: #f5f5f5;
+}
+#push {
+  height: 60px;
+}
+body > .container {
+  padding: 60px 15px 0;
+}
+.container-fluid .text-muted {
+  margin: 20px 0;
+}
+
+#footer > .container-fluid {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+.badge {
+  padding: 1px 9px 2px;
+  font-size: 12.025px;
+  font-weight: bold;
+  white-space: nowrap;
+  color: #ffffff;
+  background-color: #999999;
+  -webkit-border-radius: 9px;
+  -moz-border-radius: 9px;
+  border-radius: 9px;
+}
+.badge:hover {
+  color: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+}
+.badge-warning {
+  background-color: #f89406;
+}
