@@ -276,6 +276,7 @@ include './header.php';
 					<a class="btn btn-default active" href="./readingsday.php?bulbid=<?php echo $_GET['bulbid'];?>">Day</a>
 					<a class="btn btn-default" href="./readingsweek.php?bulbid=<?php echo $_GET['bulbid'];?>">Week</a>
 					<a class="btn btn-default" href="./readingsmonth.php?bulbid=<?php echo $_GET['bulbid'];?>">Month</a>
+					<a class="btn btn-default" href="./readingstariffaverage.php?bulbid=<?php echo $_GET['bulbid'];?>">Monthly Average</a>
 				</div>
 				<div id="chart"></div>
 			</div>
