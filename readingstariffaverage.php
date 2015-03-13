@@ -294,26 +294,37 @@ include './header.php';
 	$date = new DateTime();
 	$RealPowerReadingArray = array();
 	$interval = new DateInterval('P1D');
-	for ($i=0; $i<31; $i++){
-		$dateString = date_format($date, 'Y-m-d');
-		$yearString = date_format($date, 'Y');
-		$monthString = date_format($date, 'm');
-		$dayString = date_format($date, 'd');
-		$RealPowerReadingArray[$i]['timestamp'] = $dateString." 00:00:00";
-		//sql here
-		$sql="SELECT AVG(watts) AS watts FROM poweranalyzer WHERE bulbid=".$_GET['bulbid']." AND YEAR(timestamp)=".$yearString." AND MONTH(timestamp)=".$monthString." AND DAYOFMONTH(timestamp)=".$dayString;
-		$result=mysql_query($sql);
-		$row=mysql_fetch_array($result);
-		$RealPowerReadingArray[$i]['watts'] = $row['watts'];
-		mysql_free_result($result);
-		//end sql
-		if (is_null($RealPowerReadingArray[$i]['watts']))
-			$RealPowerReadingArray[$i]['watts'] = "0";
-		$date->sub($interval);
-	} 
-			
+	
+	$dateString = date_format($date, 'Y-m-d');
+	$yearString = date_format($date, 'Y');
+	$monthString = date_format($date, 'm');
+	$dayString = date_format($date, 'd');	
+	
+	$MonthlyAveragePower;
+	for ($i=0; $i<12; $i++) {
+		$MonthlyAveragePower[$i] = 0;
+	}
+	
+	//sql here
+	$sql="SELECT bulbid, Year(timestamp) as year, Month(timestamp) as month, Sum(va * pf) As total_watts FROM poweranalyzer WHERE bulbid=".$_GET['bulbid']." AND YEAR(timestamp)=".$yearString." GROUP BY Year(timestamp), Month(timestamp)";
+	$result=mysql_query($sql);
+
+	while($row = mysql_fetch_array($result)) {
+		  $ctr = $row['month'];
+		  $MonthlyAveragePower[$ctr] = $row['total_watts'];
+	}	
+
 ?>
 <script>
+var monthlyave = <?php echo json_encode($MonthlyAveragePower);?>;
+
+var datamonthlyave = [];
+var i=0;
+
+for (i = 0; i < 12; i++) {
+	datamonthlyave[i] = parseFloat(monthlyave[i]);
+}
+
 $(function () {
     $('#chart').highcharts({
         chart: {
@@ -363,7 +374,8 @@ $(function () {
         },
         series: [{
             name: "<strong><?php echo $bulbsArray[$_GET['bulbid'] - 1]['name'];?></strong>",
-            data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
+            //data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
+			data: datamonthlyave,
 			color: '#FF9900'
         }]
     });
