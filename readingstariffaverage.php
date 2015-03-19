@@ -28,11 +28,11 @@ mysql_free_result($result);
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
     	<meta name="viewport" content="width=device-width, initial-scale=1">
     	
-    	<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
 		<!-- Optional theme -->
-		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
 		
 		<!-- nav-bar with footer-->
 		<link href="./css/schedule.css" rel="stylesheet">
@@ -60,7 +60,8 @@ mysql_free_result($result);
 		
     </style>
 	<script src="//code.jquery.com/jquery-latest.js"></script>
-	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 	<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 	<script src="./js/jquery.ui.touch-punch.min.js"></script>
 	<script src="http://code.highcharts.com/highcharts.js"></script>
@@ -101,6 +102,27 @@ mysql_free_result($result);
 				  $('#notifications').popover('hide');
 				  $('#messages').popover('hide');
 				})
+		});
+		
+		$(document).ready(function () {
+			$("input#submit").click(function(){
+				$("#myModal").modal('show');
+			
+				/*
+				$.ajax({
+					type: "POST",
+					url: "process.php", // 
+					data: $('form.contact').serialize(),
+					success: function(msg){
+						$("#thanks").html(msg)
+						$("#form-content").modal('hide');	
+					},
+					error: function(){
+						alert("failure");
+					}
+				});
+				*/
+			});
 		});
 	</script>
 	<style>
@@ -279,6 +301,28 @@ include './header.php';
 					<a class="btn btn-default active" href="./readingstariffaverage.php?bulbid=<?php echo $_GET['bulbid'];?>">Monthly Average</a>
 				</div>
 				<div id="chart"></div>
+				
+				<!-- Modal Message -->
+				<div id="myModal" class="modal fade">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+								<h4 class="modal-title">Confirmation</h4>
+							</div>
+							<div class="modal-body">
+								<p>Do you want to save changes you made to document before closing?</p>
+								<p class="text-warning"><small>If you don't save, your changes will be lost.</small></p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary">Save changes</button>
+							</div>
+						</div>
+					</div>
+				</div>				
+				
+				<div id="thanks"><p><a data-toggle="modal" href="#myModal" class="btn btn-primary btn-large">Add Monthly Tariff Values</a></p></div>
 			</div>
 		</div>
 		<div id="push" class="container"><h1>&nbsp;</h1></div>
