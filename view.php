@@ -110,7 +110,6 @@ include './head.php';
 				position: new google.maps.LatLng(markerArray["latitude"], markerArray["longitude"]),
 			  };
 			
-			var infoWindow = new google.maps.InfoWindow(options);
 			
 			map.setCenter(options.position);
 			
@@ -127,14 +126,13 @@ include './head.php';
 				icon: iconColor,
 				title: markerArray["streetadd"]
 			});
-
-			
-			google.maps.event.addListener(marker, 'click', (function(marker) {
-					return function(){
-						infoWindow.setContent('<a href="./view.php?bulbid='+markerArray["bulbid"]+'">' + markerArray["name"] + '</a>');
-						infoWindow.open(map, marker);
-					}
-			})(marker));
+			var contentString = '<a href="./view.php?bulbid='+markerArray["bulbid"]+'">' + markerArray["name"] + '</a>';
+			var infoWindow = new google.maps.InfoWindow({
+				content: contentString
+			});
+			google.maps.event.addListener(marker, 'click', function(){
+				infoWindow.open(map,marker);
+			});
 			
 			google.maps.event.addDomListener(document.getElementById('slideON'),"click",function() {
 			  marker.setIcon('http://maps.google.com/mapfiles/ms/icons/orange.png');
@@ -391,11 +389,11 @@ include './header.php';
 							var ip = "<?php echo $marker['ipaddress'];?>";
 							var bulbid = <?php echo $marker['bulbid'];?>;
 				
-							$.get('http://'+ip+'/ilawcontrol.php?state=on&level=1&mode=control', {}, 
+							$.get('http://'+ip+'/ilawcontrol.php?state=on&level=10&mode=control', {}, 
 								function(data){
 									console.log(data);
 								});
-							$.get('./bulbDB.php?bulbid='+bulbid+'&state=on&level=1&mode=control', {}, 
+							$.get('./bulbDB.php?bulbid='+bulbid+'&state=on&level=10&mode=control', {}, 
 								function(data){
 									console.log(data);
 								});
@@ -435,8 +433,8 @@ include './header.php';
 								(function(style) {
 									style.display = style.display === 'none' ? '' : 'none';
 								})(document.getElementById('switchedON').style);
-								document.getElementById('brightness').value = "1";
-								$('#slider-range-min').slider( "value", 1 );
+								document.getElementById('brightness').value = "10";//1
+								$('#slider-range-min').slider( "value", 10 );//1
 								$('#slider-range-min').slider({ disabled: false });
 								switchON();
 							}
