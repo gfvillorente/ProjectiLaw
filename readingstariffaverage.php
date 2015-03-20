@@ -308,13 +308,62 @@ include './header.php';
 
 				<!-- Modal Message Tariffs -->
 				<div id="myModal" class="modal fade">
-					<div class="modal-dialog">
+					<div class="modal-dialog modal-sm">
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-								<h4 class="modal-title">Enter Tariff Rates</h4>
+								<h4 class="modal-title">Enter Tariff Rates (Php/KWH)</h4>
 							</div>
 							<div class="modal-body">
+								<div id="divmon0" class="input-group">
+								  <span class="input-group-addon">Jan</span>
+								  <input type="text" class="form-control" id="mon0" value="0" aria-describedby="sizing-addon2">
+								</div>
+								<div id="divmon1" class="input-group">
+								  <span class="input-group-addon">Feb</span>
+								  <input type="text" class="form-control" id="mon1" value="0" aria-describedby="sizing-addon2">
+								</div>
+								<div id="divmon2" class="input-group">
+								  <span class="input-group-addon">Mar</span>
+								  <input type="text" class="form-control" id="mon2" value="0" aria-describedby="sizing-addon2">
+								</div>
+								<div id="divmon3" class="input-group">
+								  <span class="input-group-addon">Apr</span>
+								  <input type="text" class="form-control" id="mon3" value="0" aria-describedby="sizing-addon2">
+								</div>
+								<div id="divmon4" class="input-group">
+								  <span class="input-group-addon">May</span>
+								  <input type="text" class="form-control" id="mon4" value="0" aria-describedby="sizing-addon2">
+								</div>
+								<div id="divmon5" class="input-group">
+								  <span class="input-group-addon">Jun</span>
+								  <input type="text" class="form-control" id="mon5" value="0" aria-describedby="sizing-addon2">
+								</div>
+								<div id="divmon6" class="input-group">
+								  <span class="input-group-addon">Jul</span>
+								  <input type="text" class="form-control" id="mon6" value="0" aria-describedby="sizing-addon2">
+								</div>
+								<div id="divmon7" class="input-group">
+								  <span class="input-group-addon">Aug</span>
+								  <input type="text" class="form-control" id="mon7" value="0" aria-describedby="sizing-addon2">
+								</div>
+								<div id="divmon8" class="input-group">
+								  <span class="input-group-addon">Sep</span>
+								  <input type="text" class="form-control" id="mon8" value="0" aria-describedby="sizing-addon2">
+								</div>
+								<div id="divmon9" class="input-group">
+								  <span class="input-group-addon">Oct</span>
+								  <input type="text" class="form-control" id="mon9" value="0" aria-describedby="sizing-addon2">
+								</div>
+								<div id="divmon10" class="input-group">
+								  <span class="input-group-addon">Nov</span>
+								  <input type="text" class="form-control" id="mon10" value="0" aria-describedby="sizing-addon2">
+								</div>
+								<div id="divmon11" class="input-group">
+								  <span class="input-group-addon">Dec</span>
+								  <input type="text" class="form-control" id="mon11" value="0" aria-describedby="sizing-addon2">
+								</div>
+								<!--
 								<div id="divmon0">Jan:<input type="text" id="mon0" name="jan" value="0"><br></div>
 								<div id="divmon1">Feb:<input type="text" id="mon1" name="feb" value="0"><br></div>
 								<div id="divmon2">Mar:<input type="text" id="mon2" name="mar" value="0"><br></div>
@@ -327,6 +376,7 @@ include './header.php';
 								<div id="divmon9">Oct:<input type="text" id="mon9" name="oct" value="0"><br></div>
 								<div id="divmon10">Nov:<input type="text" id="mon10" name="nov" value="0"><br></div>
 								<div id="divmon11">Dec:<input type="text" id="mon11" name="dec" value="0"><br></div>
+								-->
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
