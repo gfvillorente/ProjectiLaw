@@ -566,7 +566,7 @@ function computeMonthlyCost() {
 
 	for (i = 0; i < 12; i++) {
 		monthId = "mon" + i;
-		datamonthlycost[i] = parseFloat(document.getElementById(monthId).value) * datamonthlyave[i];
+		datamonthlycost[i] = (parseFloat(document.getElementById(monthId).value) * datamonthlyave[i]) / 1000;
 	}
 
 	//$('#myModal').modal('hide');
