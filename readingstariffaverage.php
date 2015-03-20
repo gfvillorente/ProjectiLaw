@@ -103,25 +103,29 @@ mysql_free_result($result);
 				  $('#messages').popover('hide');
 				})
 		});
-		
+
+		/*
 		$(document).ready(function () {
 			$("input#submit").click(function(){
 				$("#myModal").modal('show');
-			
-				/*
+			});
+		});
+		*/
+		
+		$(document).ready(function () {
+			$("input#submit").click(function(){
 				$.ajax({
 					type: "POST",
-					url: "process.php", // 
+					url: "process.php", //process to mail
 					data: $('form.contact').serialize(),
 					success: function(msg){
-						$("#thanks").html(msg)
-						$("#form-content").modal('hide');	
+						$("#thanks").html(msg) //hide button and show thank you
+						$("#form-content").modal('hide'); //hide popup  
 					},
 					error: function(){
 						alert("failure");
 					}
 				});
-				*/
 			});
 		});
 	</script>
@@ -301,28 +305,40 @@ include './header.php';
 					<a class="btn btn-default active" href="./readingstariffaverage.php?bulbid=<?php echo $_GET['bulbid'];?>">Monthly Average</a>
 				</div>
 				<div id="chart"></div>
-				
-				<!-- Modal Message -->
+
+				<!-- Modal Message Tariffs -->
 				<div id="myModal" class="modal fade">
 					<div class="modal-dialog">
 						<div class="modal-content">
 							<div class="modal-header">
 								<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-								<h4 class="modal-title">Confirmation</h4>
+								<h4 class="modal-title">Enter Tariff Rates</h4>
 							</div>
 							<div class="modal-body">
-								<p>Do you want to save changes you made to document before closing?</p>
-								<p class="text-warning"><small>If you don't save, your changes will be lost.</small></p>
+								<div id="divmon0">Jan:<input type="text" id="mon0" name="jan" value="0"><br></div>
+								<div id="divmon1">Feb:<input type="text" id="mon1" name="feb" value="0"><br></div>
+								<div id="divmon2">Mar:<input type="text" id="mon2" name="mar" value="0"><br></div>
+								<div id="divmon3">Apr:<input type="text" id="mon3" name="apr" value="0"><br></div>
+								<div id="divmon4">May:<input type="text" id="mon4" name="may" value="0"><br></div>
+								<div id="divmon5">Jun:<input type="text" id="mon5" name="jun" value="0"><br></div>
+								<div id="divmon6">Jul:<input type="text" id="mon6" name="jul" value="0"><br></div>
+								<div id="divmon7">Aug:<input type="text" id="mon7" name="aug" value="0"><br></div>
+								<div id="divmon8">Sep:<input type="text" id="mon8" name="sep" value="0"><br></div>
+								<div id="divmon9">Oct:<input type="text" id="mon9" name="oct" value="0"><br></div>
+								<div id="divmon10">Nov:<input type="text" id="mon10" name="nov" value="0"><br></div>
+								<div id="divmon11">Dec:<input type="text" id="mon11" name="dec" value="0"><br></div>
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary">Save changes</button>
+								<button type="button" class="btn btn-primary" data-dismiss="modal" onclick=computeMonthlyCost()>Save changes</button>
 							</div>
 						</div>
 					</div>
-				</div>				
+				</div>	
 				
 				<div id="thanks"><p><a data-toggle="modal" href="#myModal" class="btn btn-primary btn-large">Add Monthly Tariff Values</a></p></div>
+				
+				<div id="chartcost"></div>
 			</div>
 		</div>
 		<div id="push" class="container"><h1>&nbsp;</h1></div>
@@ -363,11 +379,15 @@ include './header.php';
 var monthlyave = <?php echo json_encode($MonthlyAveragePower);?>;
 
 var datamonthlyave = [];
+var datamonthlycost = [];
 var i=0;
+var firstrun = true;
 
 for (i = 0; i < 12; i++) {
 	datamonthlyave[i] = parseFloat(monthlyave[i]);
 }
+
+hideZeroMonths();
 
 $(function () {
     $('#chart').highcharts({
@@ -425,7 +445,137 @@ $(function () {
     });
 });
 
-	</script>
+function chartMonthlyCost() {
+    $('#chartcost').highcharts({
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: "Monthly Average Cost for "+"<strong><?php echo $bulbsArray[$_GET['bulbid'] - 1]['name'];?></strong>"
+        },
+        subtitle: {
+            text: 'Source: Project ilaw'
+        },
+        xAxis: {
+            categories: [
+                'Jan',
+                'Feb',
+                'Mar',
+                'Apr',
+                'May',
+                'Jun',
+                'Jul',
+                'Aug',
+                'Sep',
+                'Oct',
+                'Nov',
+                'Dec'
+            ]
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'Total Cost (Pesos)'
+            }
+        },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:#FF9900;padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} Pesos</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+        series: [{
+            name: "<strong><?php echo $bulbsArray[$_GET['bulbid'] - 1]['name'];?></strong>",
+            //data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
+			data: datamonthlycost,
+			color: '#FF9900'
+        }]
+    });
+}
+
+function updateMonthlyCost() {
+	var chart = $('#chartcost').highcharts();
+	var i=0;
+	
+	for (i = 0; i < 12; i++) {
+		chart.series[0].data[i].update(datamonthlycost[i]);
+	}
+}
+
+function computeMonthlyCost() {
+	var monthId = "mon";
+	var i=0;
+
+	for (i = 0; i < 12; i++) {
+		monthId = "mon" + i;
+		datamonthlycost[i] = parseFloat(document.getElementById(monthId).value) * datamonthlyave[i];
+	}
+
+	//$('#myModal').modal('hide');
+	if(firstrun) {
+		chartMonthlyCost();
+		firstrun = false;
+	}
+	else {
+		updateMonthlyCost();
+	}
+}
+
+function hideZeroMonths() {
+	var monthId = "divmon";
+	var i=0;
+
+	for (i = 0; i < 12; i++) {
+		if(datamonthlyave[i] == 0) {
+			monthId = "divmon" + i;
+			document.getElementById(monthId).style.display = "none";
+		}
+	}
+}
+
+</script>
 	
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
