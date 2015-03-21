@@ -399,7 +399,7 @@ include './header.php';
 					</div>
 				</div>	
 				
-				<div id="thanks"><p><a data-toggle="modal" href="#myModal" class="btn btn-warning btn-large">Add Monthly Tariff Values</a></p></div>
+				<div id="tariffbtn"><p><a data-toggle="modal" href="#myModal" class="btn btn-warning btn-large">Add Monthly Tariff Values</a></p></div>
 				
 				<div id="chartcost"></div>
 			</div>
@@ -575,14 +575,21 @@ function updateMonthlyCost() {
 
 function computeMonthlyCost() {
 	var monthId = "mon";
+	var monthCost = 0;
 	var i=0;
 
 	for (i = 0; i < 12; i++) {
 		monthId = "mon" + i;
-		datamonthlycost[i] = (parseFloat(document.getElementById(monthId).value) * datamonthlyave[i]) / 1000;
+		if(document.getElementById(monthId).value == "") {
+			monthCost = 0;
+		}
+		else {
+			monthCost = parseFloat(document.getElementById(monthId).value);
+		}
+		
+		datamonthlycost[i] = (monthCost * datamonthlyave[i]) / 1000;
 	}
 
-	//$('#myModal').modal('hide');
 	if(firstrun) {
 		chartMonthlyCost();
 		firstrun = false;
