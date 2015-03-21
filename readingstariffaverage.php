@@ -315,78 +315,91 @@ include './header.php';
 								<h4 class="modal-title">Enter Tariff Rates (Php/KWH)</h4>
 							</div>
 							<div class="modal-body">
-								<div id="divmon0" class="input-group">
-								  <span class="input-group-addon">Jan</span>
-								  <input type="text" class="form-control" id="mon0" value="0" aria-describedby="sizing-addon2">
-								</div>
-								<div id="divmon1" class="input-group">
-								  <span class="input-group-addon">Feb</span>
-								  <input type="text" class="form-control" id="mon1" value="0" aria-describedby="sizing-addon2">
-								</div>
-								<div id="divmon2" class="input-group">
-								  <span class="input-group-addon">Mar</span>
-								  <input type="text" class="form-control" id="mon2" value="0" aria-describedby="sizing-addon2">
-								</div>
-								<div id="divmon3" class="input-group">
-								  <span class="input-group-addon">Apr</span>
-								  <input type="text" class="form-control" id="mon3" value="0" aria-describedby="sizing-addon2">
-								</div>
-								<div id="divmon4" class="input-group">
-								  <span class="input-group-addon">May</span>
-								  <input type="text" class="form-control" id="mon4" value="0" aria-describedby="sizing-addon2">
-								</div>
-								<div id="divmon5" class="input-group">
-								  <span class="input-group-addon">Jun</span>
-								  <input type="text" class="form-control" id="mon5" value="0" aria-describedby="sizing-addon2">
-								</div>
-								<div id="divmon6" class="input-group">
-								  <span class="input-group-addon">Jul</span>
-								  <input type="text" class="form-control" id="mon6" value="0" aria-describedby="sizing-addon2">
-								</div>
-								<div id="divmon7" class="input-group">
-								  <span class="input-group-addon">Aug</span>
-								  <input type="text" class="form-control" id="mon7" value="0" aria-describedby="sizing-addon2">
-								</div>
-								<div id="divmon8" class="input-group">
-								  <span class="input-group-addon">Sep</span>
-								  <input type="text" class="form-control" id="mon8" value="0" aria-describedby="sizing-addon2">
-								</div>
-								<div id="divmon9" class="input-group">
-								  <span class="input-group-addon">Oct</span>
-								  <input type="text" class="form-control" id="mon9" value="0" aria-describedby="sizing-addon2">
-								</div>
-								<div id="divmon10" class="input-group">
-								  <span class="input-group-addon">Nov</span>
-								  <input type="text" class="form-control" id="mon10" value="0" aria-describedby="sizing-addon2">
-								</div>
-								<div id="divmon11" class="input-group">
-								  <span class="input-group-addon">Dec</span>
-								  <input type="text" class="form-control" id="mon11" value="0" aria-describedby="sizing-addon2">
-								</div>
-								<!--
-								<div id="divmon0">Jan:<input type="text" id="mon0" name="jan" value="0"><br></div>
-								<div id="divmon1">Feb:<input type="text" id="mon1" name="feb" value="0"><br></div>
-								<div id="divmon2">Mar:<input type="text" id="mon2" name="mar" value="0"><br></div>
-								<div id="divmon3">Apr:<input type="text" id="mon3" name="apr" value="0"><br></div>
-								<div id="divmon4">May:<input type="text" id="mon4" name="may" value="0"><br></div>
-								<div id="divmon5">Jun:<input type="text" id="mon5" name="jun" value="0"><br></div>
-								<div id="divmon6">Jul:<input type="text" id="mon6" name="jul" value="0"><br></div>
-								<div id="divmon7">Aug:<input type="text" id="mon7" name="aug" value="0"><br></div>
-								<div id="divmon8">Sep:<input type="text" id="mon8" name="sep" value="0"><br></div>
-								<div id="divmon9">Oct:<input type="text" id="mon9" name="oct" value="0"><br></div>
-								<div id="divmon10">Nov:<input type="text" id="mon10" name="nov" value="0"><br></div>
-								<div id="divmon11">Dec:<input type="text" id="mon11" name="dec" value="0"><br></div>
-								-->
+								<form class="form-horizontal">
+									<div id="divmon0" class="form-group">
+									  <label for="mon0" class="col-sm-2 control-label">Jan</label>
+									  <div class="col-sm-10">
+										  <input type="text" class="form-control" id="mon0" aria-describedby="sizing-addon2" placeholder="0.0">
+									  </div>
+									</div>
+									<div id="divmon1" class="form-group">
+									  <label for="mon1" class="col-sm-2 control-label">Feb</label>
+									  <div class="col-sm-10">
+										  <input type="text" class="form-control" id="mon1" aria-describedby="sizing-addon2" placeholder="0.0">
+									  </div>
+									</div>
+									<div id="divmon2" class="form-group">
+									  <label for="mon2" class="col-sm-2 control-label">Mar</label>
+									  <div class="col-sm-10">
+										  <input type="text" class="form-control" id="mon2" aria-describedby="sizing-addon2" placeholder="0.0">
+									  </div>
+									</div>
+									<div id="divmon3" class="form-group">
+									  <label for="mon3" class="col-sm-2 control-label">Apr</label>
+									  <div class="col-sm-10">
+										  <input type="text" class="form-control" id="mon3" aria-describedby="sizing-addon2" placeholder="0.0">
+									  </div>
+									</div>
+									<div id="divmon4" class="form-group">
+									  <label for="mon4" class="col-sm-2 control-label">May</label>
+									  <div class="col-sm-10">
+										  <input type="text" class="form-control" id="mon4" aria-describedby="sizing-addon2" placeholder="0.0">
+									  </div>
+									</div>
+									<div id="divmon5" class="form-group">
+									  <label for="mon5" class="col-sm-2 control-label">Jun</label>
+									  <div class="col-sm-10">
+										  <input type="text" class="form-control" id="mon5" aria-describedby="sizing-addon2" placeholder="0.0">
+									  </div>
+									</div>
+									<div id="divmon6" class="form-group">
+									  <label for="mon6" class="col-sm-2 control-label">Jul</label>
+									  <div class="col-sm-10">
+										  <input type="text" class="form-control" id="mon6" aria-describedby="sizing-addon2" placeholder="0.0">
+									  </div>
+									</div>
+									<div id="divmon7" class="form-group">
+									  <label for="mon7" class="col-sm-2 control-label">Aug</label>
+									  <div class="col-sm-10">
+										  <input type="text" class="form-control" id="mon7" aria-describedby="sizing-addon2" placeholder="0.0">
+									  </div>
+									</div>
+									<div id="divmon8" class="form-group">
+									  <label for="mon8" class="col-sm-2 control-label">Sep</label>
+									  <div class="col-sm-10">
+										  <input type="text" class="form-control" id="mon8" aria-describedby="sizing-addon2" placeholder="0.0">
+									  </div>
+									</div>
+									<div id="divmon9" class="form-group">
+									  <label for="mon9" class="col-sm-2 control-label">Oct</label>
+									  <div class="col-sm-10">
+										  <input type="text" class="form-control" id="mon9" aria-describedby="sizing-addon2" placeholder="0.0">
+									  </div>
+									</div>
+									<div id="divmon10" class="form-group">
+									  <label for="mon10" class="col-sm-2 control-label">Nov</label>
+									  <div class="col-sm-10">
+										  <input type="text" class="form-control" id="mon10" aria-describedby="sizing-addon2" placeholder="0.0">
+									  </div>
+									</div>
+									<div id="divmon11" class="form-group">
+									  <label for="mon11" class="col-sm-2 control-label">Dec</label>
+									  <div class="col-sm-10">
+										  <input type="text" class="form-control" id="mon11" aria-describedby="sizing-addon2" placeholder="0.0">
+									  </div>
+									</div>
+									
+								</form>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary" data-dismiss="modal" onclick=computeMonthlyCost()>Save changes</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+								<button type="button" class="btn btn-warning" data-dismiss="modal" onclick=computeMonthlyCost()>Apply</button>
 							</div>
 						</div>
 					</div>
 				</div>	
 				
-				<div id="thanks"><p><a data-toggle="modal" href="#myModal" class="btn btn-primary btn-large">Add Monthly Tariff Values</a></p></div>
+				<div id="thanks"><p><a data-toggle="modal" href="#myModal" class="btn btn-warning btn-large">Add Monthly Tariff Values</a></p></div>
 				
 				<div id="chartcost"></div>
 			</div>
@@ -530,7 +543,7 @@ function chartMonthlyCost() {
         },
         tooltip: {
             headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-            pointFormat: '<tr><td style="color:#FF9900;padding:0">{series.name}: </td>' +
+            pointFormat: '<tr><td style="color:#9D9D9D;padding:0">{series.name}: </td>' +
                 '<td style="padding:0"><b>{point.y:.1f} Pesos</b></td></tr>',
             footerFormat: '</table>',
             shared: true,
@@ -546,7 +559,7 @@ function chartMonthlyCost() {
             name: "<strong><?php echo $bulbsArray[$_GET['bulbid'] - 1]['name'];?></strong>",
             //data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
 			data: datamonthlycost,
-			color: '#FF9900'
+			color: '#9D9D9D'
         }]
     });
 }
