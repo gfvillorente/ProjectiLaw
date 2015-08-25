@@ -103,31 +103,6 @@ mysql_free_result($result);
 				  $('#messages').popover('hide');
 				})
 		});
-
-		/*
-		$(document).ready(function () {
-			$("input#submit").click(function(){
-				$("#myModal").modal('show');
-			});
-		});
-		*/
-		
-		$(document).ready(function () {
-			$("input#submit").click(function(){
-				$.ajax({
-					type: "POST",
-					url: "process.php", //process to mail
-					data: $('form.contact').serialize(),
-					success: function(msg){
-						$("#thanks").html(msg) //hide button and show thank you
-						$("#form-content").modal('hide'); //hide popup  
-					},
-					error: function(){
-						alert("failure");
-					}
-				});
-			});
-		});
 	</script>
 	<style>
 	
@@ -429,12 +404,33 @@ include './header.php';
 	}
 	
 	//sql here
-	$sql="SELECT bulbid, Year(timestamp) as year, Month(timestamp) as month, Sum(va * pf) As total_watts FROM poweranalyzer WHERE bulbid=".$_GET['bulbid']." AND YEAR(timestamp)=".$yearString." GROUP BY Year(timestamp), Month(timestamp)";
+	//$sql="SELECT bulbid, Year(timestamp) as year, Month(timestamp) as month, Sum(va * pf) As total_watts FROM poweranalyzer WHERE bulbid=".$_GET['bulbid']." AND YEAR(timestamp)=".$yearString." GROUP BY Year(timestamp), Month(timestamp)";
+	$sql="SELECT
+			Year(timeinterval) as year, 
+			Month(timeinterval) - 1 as month, 
+			sum(abs(ave_va * ave_pf)) as total_watts
+		FROM
+			(
+			select 
+				avg(va) as ave_va, 
+				avg(pf) as ave_pf, 
+				convert((min(timestamp) div 6000)*6000, datetime) as timeinterval
+			from poweranalyzer
+			where bulbid = ".$_GET['bulbid']." AND YEAR(timestamp) = ".$yearString."
+			group by timestamp div 6000
+			) as newdb
+		GROUP BY
+			Year(timeinterval),
+			Month(timeinterval);";
 	$result=mysql_query($sql);
 
 	while($row = mysql_fetch_array($result)) {
-		  $ctr = $row['month'];
-		  $MonthlyAveragePower[$ctr] = $row['total_watts'];
+		$tempMonth = $row['month'];
+
+		if ($tempMonth != NULL) {
+			$ctr = $row['month'];
+			$MonthlyAveragePower[$ctr] = $row['total_watts'];
+		}
 	}	
 
 ?>
@@ -482,13 +478,13 @@ $(function () {
         yAxis: {
             min: 0,
             title: {
-                text: 'Real Power (Watts)'
+                text: 'Energy Consumption (Watt Hour)' //'Real Power (Watts)'
             }
         },
         tooltip: {
             headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
             pointFormat: '<tr><td style="color:#FF9900;padding:0">{series.name}: </td>' +
-                '<td style="padding:0"><b>{point.y:.1f} Watts</b></td></tr>',
+                '<td style="padding:0"><b>{point.y:.1f} Watt-Hour</b></td></tr>',
             footerFormat: '</table>',
             shared: true,
             useHTML: true

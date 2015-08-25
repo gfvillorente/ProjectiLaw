@@ -9,6 +9,18 @@ $password="raspberry"; // Mysql password
 $db_name="ilaw"; // Database name 
 $tbl_name="bulb"; // Table name 
 
+//Right Navigation Menu Highlights
+$groupWarningMaps = "";
+$badgeWarningMaps = "";
+$groupWarningLights = "";
+$badgeWarningLights = "";
+$groupWarningReportsIndividual = "list-group-item-warning";
+$badgeWarningReportsIndividual = "badge-warning";
+$groupWarningReportsCluster = "";
+$badgeWarningReportsCluster = "";
+$groupWarningSchedules = "";
+$badgeWarningSchedules = "";
+
 // Connect to server and select databse.
 $con=mysql_connect("$host", "$username", "$password")or die("cannot connect"); 
 mysql_select_db("$db_name")or die("cannot select DB");

@@ -8,6 +8,18 @@ $username="pi"; // Mysql username
 $password="raspberry"; // Mysql password 
 $db_name="ilaw"; // Database name 
 
+//Right Navigation Menu Highlights
+$groupWarningMaps = "";
+$badgeWarningMaps = "";
+$groupWarningLights = "";
+$badgeWarningLights = "";
+$groupWarningReportsIndividual = "";
+$badgeWarningReportsIndividual = "";
+$groupWarningReportsCluster = "";
+$badgeWarningReportsCluster = "";
+$groupWarningSchedules = "list-group-item-warning";
+$badgeWarningSchedules = "badge-warning";
+
 // Connect to server and select databse.
 $con=mysql_connect("$host", "$username", "$password")or die("cannot connect"); 
 mysql_select_db("$db_name")or die("cannot select DB");
@@ -49,6 +61,10 @@ mysql_free_result($result);
 // is probably because you have denied permission for location sharing.
 
 var map;
+var clusterid, scheduleid, sdate, edate, stime, etime;
+
+clusterid = <?php echo $_GET['clusterid']; ?>;
+scheduleid = <?php echo $_GET['scheduleid']; ?>;
 
 function initialize() {
 	var mapOptions = {
@@ -180,135 +196,9 @@ google.maps.event.addDomListener(window, 'load', initialize);
 include './header.php';
 ?>
 <div id="map-canvas"></div>
-<div id="float">
-	<ul class="list-group list-unstyled">
-		<li id="maps" class="dropdown">
-		<?php
-			$sql="SELECT clusterid, name FROM cluster";
-			$result=mysql_query($sql);
-			$clustersArray = array();
-			$countClusters = 0;
-			while($row=mysql_fetch_array($result))
-			{
-				$clustersArray[$countClusters]['clusterid'] = $row['clusterid'];
-				$clustersArray[$countClusters]['name'] = $row['name'];
-				$countClusters++;
-			}
-			mysql_free_result($result);
-		?>
-			<a href="#" class="list-group-item dropdown-toggle" data-toggle="dropdown">
-			  <span class="glyphicon glyphicon-map-marker"></span>
-			  Maps
-			  <span class="badge pull-right"><?php echo $countClusters; ?></span>
-			</a>
-			<ul class="dropdown-menu">
-				<li role="presentation" class="dropdown-header">Map Clusters</li>
-				<?php
-					for($i = 0; $i < $countClusters; $i++) {
-						echo "<li role=\"presentation\"><a role=\"menuitem\" tabindex=\"-1\" href=\"./cluster.php?clusterid=".$clustersArray[$i]['clusterid']."\">".$clustersArray[$i]['name']."</a></li>";
-					}
-				?>
-				<li role="presentation" class="divider"></li>
-				<li role="presentation"><a role="menuitem" tabindex="-1" href="./addcluster.php">Add a Cluster</a></li>
-          </ul>
-		</li>
-		<li id="lights" class="dropdown">
-		<?php
-			$sql="SELECT bulbid, name FROM bulb";
-			$result=mysql_query($sql);
-			$bulbsArray = array();
-			$countBulbs = 0;
-			while($row=mysql_fetch_array($result))
-			{
-				$bulbsArray[$countBulbs]['bulbid'] = $row['bulbid'];
-				$bulbsArray[$countBulbs]['name'] = $row['name'];
-				$countBulbs++;
-			}
-			mysql_free_result($result);
-		?>
-			<a href="#" class="list-group-item dropdown-toggle" data-toggle="dropdown">
-			  <span class="glyphicon glyphicon-adjust"></span>
-			  Lights
-			  <span class="badge pull-right"><?php echo $countBulbs; ?></span>
-			</a>
-			<ul class="dropdown-menu">
-				<li role="presentation" class="dropdown-header">Light Bulbs</li>
-				<?php
-					for($i = 0; $i < $countBulbs; $i++) {
-						echo "<li role=\"presentation\"><a role=\"menuitem\" tabindex=\"-1\" href=\"./view.php?bulbid=".$bulbsArray[$i]['bulbid']."\">".$bulbsArray[$i]['name']."</a></li>";
-					}
-				?>
-				<li role="presentation" class="divider"></li>
-				<li role="presentation"><a role="menuitem" tabindex="-1" href="./addlight.php">Add a Light</a></li>
-          </ul>
-		</li>
-		<li id="readings" class="dropdown">
-		<?php
-			$sql="SELECT bulbid, name FROM bulb WHERE bulbid IN (SELECT DISTINCT bulbid FROM poweranalyzer ORDER BY bulbid)";
-			$result=mysql_query($sql);
-			$readingsArray = array();
-			$countReadings = 0;
-			while($row=mysql_fetch_array($result))
-			{
-				$readingsArray[$countReadings]['bulbid'] = $row['bulbid'];
-				$readingsArray[$countReadings]['name'] = $row['name'];
-				$countReadings++;
-			}
-			mysql_free_result($result);
-		?>
-			<a href="#" class="list-group-item dropdown-toggle" data-toggle="dropdown">
-			  <span class="glyphicon glyphicon-signal"></span>
-			  Reports
-			  <span class="badge pull-right"><?php echo $countReadings; ?></span>
-			</a>
-			<ul class="dropdown-menu">
-				<li role="presentation" class="dropdown-header">Consumption Reports</li>
-				<?php
-					for($i = 0; $i < $countReadings; $i++) {
-						echo "<li role=\"presentation\"><a role=\"menuitem\" tabindex=\"-1\" href=\"./readings.php?bulbid=".$readingsArray[$i]['bulbid']."\">".$readingsArray[$i]['name']."</a></li>";
-					}
-				?>
-				<li role="presentation" class="divider"></li>
-				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Customize a Report</a></li>
-          </ul>
-		</li>
-		<li id="schedules" class="dropdown">
-		<?php
-			$sql="SELECT scheduleid, start_date, end_date, start_time, end_time FROM schedule";
-			$result=mysql_query($sql);
-			$schedulesArray = array();
-			$countSchedules = 0;
-			while($row=mysql_fetch_array($result))
-			{
-				$schedulesArray[$countSchedules]['scheduleid'] = $row['scheduleid'];
-				$schedulesArray[$countSchedules]['start_date'] = $row['start_date'];
-				$schedulesArray[$countSchedules]['start_time'] = $row['start_time'];
-				$schedulesArray[$countSchedules]['end_date'] = $row['end_date'];
-				$schedulesArray[$countSchedules]['end_time'] = $row['end_time'];
-				$countSchedules++;
-			}
-			mysql_free_result($result);
-		?>
-			<a href="#" class="list-group-item list-group-item-warning dropdown-toggle" data-toggle="dropdown">
-			  <span class="glyphicon glyphicon-calendar"></span>
-			  Schedules
-			  <span class="badge pull-right badge-warning"><?php echo $countSchedules; ?></span>
-			</a>
-			<ul class="dropdown-menu">
-				<li role="presentation" class="dropdown-header">Events</li>
-				<?php
-					$dateNow = date("Y-m-d");
-					for($i = 0; $i < $countSchedules; $i++) {
-						if ($schedulesArray[$i]['end_date'] > $dateNow)
-							echo "<li role=\"presentation\"><a role=\"menuitem\" tabindex=\"-1\" href=\"./viewschedule.php?scheduleid=".$schedulesArray[$i]['scheduleid']."\">On ".$schedulesArray[$i]['start_date']." to ".$schedulesArray[$i]['end_date']." from ".$schedulesArray[$i]['start_time']." to ".$schedulesArray[$i]['end_time']."</a></li>";
-					}
-				?>
-				<li role="presentation" class="divider"></li>
-				<li role="presentation"><a role="menuitem" tabindex="-1" href="./addschedule.php">Schedule an Event</a></li>
-          </ul>
-		</li>		
-	</ul>
-</div>
+<?php
+include './rightnavigationbar.php';
+?>
 <div id="content">
 	<div class="container-fluid">
 		<form class="form-horizontal">
@@ -343,11 +233,11 @@ include './header.php';
 				?>
 				<label for="startDate" class="control-label col-sm-offset-1 col-sm-2">Start Date</label>
 				<div class="col-sm-3">
-					<input type="text" class="form-control" id="startDate" name="startDate" value ="<?php echo $schedule['start_date'];?>" disabled>
+					<input type="text" class="form-control" id="startDate" name="startDate" value ="<?php echo $schedule['start_date'];?>" >
 				</div>
 				<label for="endDate" class="control-label col-sm-offset-1 col-sm-2">End Date</label>
 				<div class="col-sm-3">
-					<input type="text" class="form-control" id="endDate" name="endDate" value ="<?php echo $schedule['end_date'];?>" disabled>
+					<input type="text" class="form-control" id="endDate" name="endDate" value ="<?php echo $schedule['end_date'];?>" >
 				</div>
 				<script>
 					$(function(){
@@ -355,7 +245,7 @@ include './header.php';
 						$("#startDate").datepicker({ dateFormat: 'yy-mm-dd' }).bind("change",function(){
 							var minValue = $(this).val();
 							minValue = $.datepicker.parseDate("yy-mm-dd", minValue);
-							minValue.setDate(minValue.getDate()+1);
+							//minValue.setDate(minValue.getDate()+1);
 							$("#endDate").datepicker( "option", "minDate", minValue );
 						})
 					});
@@ -364,16 +254,16 @@ include './header.php';
 			<div class="form-group">
 				<label for="startTime" class="control-label col-sm-offset-1 col-sm-2">Start Time</label>
 				<div class="col-sm-3">
-					<input id="startTime" name="startTime" type="text" class="time form-control" value ="<?php echo $schedule['start_time'];?>" disabled>
+					<input id="startTime" name="startTime" type="text" class="time form-control" value ="<?php echo $schedule['start_time'];?>" >
 					<script>
 						$(function(){
 							$('#startTime').timepicker({ 'timeFormat': 'H:i:s' });
 						});
 					</script>
 				</div>
-				<label for="endTime" class="control-label col-sm-offset-1 col-sm-2">End Date</label>
+				<label for="endTime" class="control-label col-sm-offset-1 col-sm-2">End Time</label>
 				<div class="col-sm-3">
-					<input id="endTime" name="endTime" type="text" class="time form-control" value ="<?php echo $schedule['end_time'];?>" disabled>
+					<input id="endTime" name="endTime" type="text" class="time form-control" value ="<?php echo $schedule['end_time'];?>" >
 					<script>
 						$(function(){
 							$('#endTime').timepicker({ 'timeFormat': 'H:i:s' });
@@ -384,7 +274,7 @@ include './header.php';
 			<div class="form-group" id="brightnessSlider">
 				<label for="brightness" class="col-sm-offset-1 col-sm-2 control-label">Brightness</label>
   				<div class="col-sm-2">
-	  				<input type="text" class="form-control input-lg" id="brightness" disabled>
+	  				<input type="text" class="form-control input-lg" id="brightness" >
 	  			</div>
 				<div class="col-sm-7">
   					<div id="slider-range-min"></div>
@@ -403,10 +293,48 @@ include './header.php';
 						});
 						$( "#brightness" ).val( $( "#slider-range-min" ).slider( "value" ) );
 					});
-					$('#slider-range-min').slider({ disabled: true });
+					$('#slider-range-min').on( "slidechange", function( event, ui ) {
+						level = $( "#slider-range-min" ).slider( "value" );
+
+					});							
+					$('#slider-range-min').slider({ disabled: false });
 				</script>		
-		
 			</div>
+			<div class="form-group">
+				<label for="spaceFiller" class="control-label col-sm-offset-1 col-sm-2"></label>
+				<div class="col-sm-3">
+					<button id="UpdateSchedule" name="UpdateSchedule" onclick="UpdateSched();" type="button" class="btn btn-warning btn-lg col-sm-7">
+						Update!
+					</button>
+					<script>
+						function UpdateSched() {
+							sdate = document.getElementById("startDate").value;
+							edate = document.getElementById("endDate").value;
+							stime = document.getElementById("startTime").value;
+							etime = document.getElementById("endTime").value;
+
+							$.get('./scheduleDB.php?scheduleid='+scheduleid+'&sdate='+sdate+'&edate='+edate+'&stime='+stime+'&etime='+etime+'&level='+level, {}, 
+								function(data){
+									console.log(data);
+								});
+
+							$("#updateModal").modal('show');
+						}
+					</script>
+				</div>
+			</div>
+			<div id="updateModal" class="modal fade">
+			    <div class="modal-dialog">
+			        <div class="modal-content">
+			            <div class="modal-body">
+			                <p class="text-warning"><big>Cluster Schedule has been Updated!</big></p>
+			            </div>
+			            <div class="modal-footer">
+			                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+			            </div>
+			        </div>
+			    </div>
+			</div>			
 		</form>
 	</div>
 </div>	

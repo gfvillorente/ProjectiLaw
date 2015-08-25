@@ -144,7 +144,7 @@ include './header.php';
 					<li role="presentation" class="dropdown-header">Map Clusters</li>
 					<?php
 						for($i = 0; $i < $countClusters; $i++) {
-							echo "<li role=\"presentation\"><a role=\"menuitem\" tabindex=\"-1\" href=\"./cluster.php?clusterid=".$clustersArray[$i]['clusterid']."\">".$clustersArray[$i]['name']."</a></li>";
+							echo "<li role=\"presentation\"><a role=\"menuitem\" tabindex=\"-1\" href=\"./clusterview.php?clusterid=".$clustersArray[$i]['clusterid']."\">".$clustersArray[$i]['name']."</a></li>";
 						}
 					?>
 					<li role="presentation" class="divider"></li>

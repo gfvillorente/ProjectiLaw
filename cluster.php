@@ -8,6 +8,18 @@ $username="pi"; // Mysql username
 $password="raspberry"; // Mysql password 
 $db_name="ilaw"; // Database name 
 
+//Right Navigation Menu Highlights
+$groupWarningMaps = "list-group-item-warning";
+$badgeWarningMaps = "badge-warning";
+$groupWarningLights = "";
+$badgeWarningLights = "";
+$groupWarningReportsIndividual = "";
+$badgeWarningReportsIndividual = "";
+$groupWarningReportsCluster = "";
+$badgeWarningReportsCluster = "";
+$groupWarningSchedules = "";
+$badgeWarningSchedules = "";
+
 // Connect to server and select databse.
 $con=mysql_connect("$host", "$username", "$password")or die("cannot connect"); 
 mysql_select_db("$db_name")or die("cannot select DB");
@@ -65,7 +77,19 @@ var map;
 function initialize() {
 	var mapOptions = {
 		zoom: 17,
-		styles: [{"featureType":"water","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":17}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":20}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"lightness":17}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#000000"},{"lightness":29},{"weight":0.2}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":18}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":16}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":21}]},{"elementType":"labels.text.stroke","stylers":[{"visibility":"on"},{"color":"#000000"},{"lightness":16}]},{"elementType":"labels.text.fill","stylers":[{"saturation":36},{"color":"#000000"},{"lightness":40}]},{"elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":19}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"lightness":20}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#000000"},{"lightness":17},{"weight":1.2}]}]
+		styles: [{"featureType":"water","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":17}]},
+				{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":20}]},
+				{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"lightness":17}]},
+				{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#000000"},{"lightness":29},{"weight":0.2}]},
+				{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":18}]},
+				{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":16}]},
+				{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":21}]},
+				{"elementType":"labels.text.stroke","stylers":[{"visibility":"on"},{"color":"#000000"},{"lightness":16}]},
+				{"elementType":"labels.text.fill","stylers":[{"saturation":36},{"color":"#000000"},{"lightness":40}]},
+				{"elementType":"labels.icon","stylers":[{"visibility":"off"}]},
+				{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#000000"},{"lightness":19}]},
+				{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#000000"},{"lightness":20}]},
+				{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#000000"},{"lightness":17},{"weight":1.2}]}]
 	};
 	var map = new google.maps.Map(document.getElementById('map-canvas'),
 	  mapOptions);
@@ -109,135 +133,9 @@ google.maps.event.addDomListener(window, 'load', initialize);
 include './header.php';
 ?>
 <div id="map-canvas"></div>
-<div id="float">
-	<ul class="list-group list-unstyled">
-		<li id="maps" class="dropdown">
-		<?php
-			$sql="SELECT clusterid, name FROM cluster";
-			$result=mysql_query($sql);
-			$clustersArray = array();
-			$countClusters = 0;
-			while($row=mysql_fetch_array($result))
-			{
-				$clustersArray[$countClusters]['clusterid'] = $row['clusterid'];
-				$clustersArray[$countClusters]['name'] = $row['name'];
-				$countClusters++;
-			}
-			mysql_free_result($result);
-		?>
-			<a href="#" class="list-group-item list-group-item-warning dropdown-toggle" data-toggle="dropdown">
-			  <span class="glyphicon glyphicon-map-marker"></span>
-			  Maps
-			  <span class="badge pull-right badge-warning"><?php echo $countClusters; ?></span>
-			</a>
-			<ul class="dropdown-menu">
-				<li role="presentation" class="dropdown-header">Map Clusters</li>
-				<?php
-					for($i = 0; $i < $countClusters; $i++) {
-						echo "<li role=\"presentation\"><a role=\"menuitem\" tabindex=\"-1\" href=\"./cluster.php?clusterid=".$clustersArray[$i]['clusterid']."\">".$clustersArray[$i]['name']."</a></li>";
-					}
-				?>
-				<li role="presentation" class="divider"></li>
-				<li role="presentation"><a role="menuitem" tabindex="-1" href="./addcluster.php">Add a Cluster</a></li>
-          </ul>
-		</li>
-		<li id="lights" class="dropdown">
-		<?php
-			$sql="SELECT bulbid, name FROM bulb";
-			$result=mysql_query($sql);
-			$bulbsArray = array();
-			$countBulbs = 0;
-			while($row=mysql_fetch_array($result))
-			{
-				$bulbsArray[$countBulbs]['bulbid'] = $row['bulbid'];
-				$bulbsArray[$countBulbs]['name'] = $row['name'];
-				$countBulbs++;
-			}
-			mysql_free_result($result);
-		?>
-			<a href="#" class="list-group-item dropdown-toggle" data-toggle="dropdown">
-			  <span class="glyphicon glyphicon-adjust"></span>
-			  Lights
-			  <span class="badge pull-right"><?php echo $countBulbs; ?></span>
-			</a>
-			<ul class="dropdown-menu">
-				<li role="presentation" class="dropdown-header">Light Bulbs</li>
-				<?php
-					for($i = 0; $i < $countBulbs; $i++) {
-						echo "<li role=\"presentation\"><a role=\"menuitem\" tabindex=\"-1\" href=\"./view.php?bulbid=".$bulbsArray[$i]['bulbid']."\">".$bulbsArray[$i]['name']."</a></li>";
-					}
-				?>
-				<li role="presentation" class="divider"></li>
-				<li role="presentation"><a role="menuitem" tabindex="-1" href="./addlight.php">Add a Light</a></li>
-          </ul>
-		</li>
-		<li id="readings" class="dropdown">
-		<?php
-			$sql="SELECT bulbid, name FROM bulb WHERE bulbid IN (SELECT DISTINCT bulbid FROM poweranalyzer ORDER BY bulbid)";
-			$result=mysql_query($sql);
-			$readingsArray = array();
-			$countReadings = 0;
-			while($row=mysql_fetch_array($result))
-			{
-				$readingsArray[$countReadings]['bulbid'] = $row['bulbid'];
-				$readingsArray[$countReadings]['name'] = $row['name'];
-				$countReadings++;
-			}
-			mysql_free_result($result);
-		?>
-			<a href="#" class="list-group-item dropdown-toggle" data-toggle="dropdown">
-			  <span class="glyphicon glyphicon-signal"></span>
-			  Reports
-			  <span class="badge pull-right"><?php echo $countReadings; ?></span>
-			</a>
-			<ul class="dropdown-menu">
-				<li role="presentation" class="dropdown-header">Consumption Reports</li>
-				<?php
-					for($i = 0; $i < $countReadings; $i++) {
-						echo "<li role=\"presentation\"><a role=\"menuitem\" tabindex=\"-1\" href=\"./readings.php?bulbid=".$readingsArray[$i]['bulbid']."\">".$readingsArray[$i]['name']."</a></li>";
-					}
-				?>
-				<li role="presentation" class="divider"></li>
-				<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Customize a Report</a></li>
-          </ul>
-		</li>
-		<li id="schedules" class="dropdown">
-		<?php
-			$sql="SELECT scheduleid, start_date, end_date, start_time, end_time FROM schedule";
-			$result=mysql_query($sql);
-			$schedulesArray = array();
-			$countSchedules = 0;
-			while($row=mysql_fetch_array($result))
-			{
-				$schedulesArray[$countSchedules]['scheduleid'] = $row['scheduleid'];
-				$schedulesArray[$countSchedules]['start_date'] = $row['start_date'];
-				$schedulesArray[$countSchedules]['start_time'] = $row['start_time'];
-				$schedulesArray[$countSchedules]['end_date'] = $row['end_date'];
-				$schedulesArray[$countSchedules]['end_time'] = $row['end_time'];
-				$countSchedules++;
-			}
-			mysql_free_result($result);
-		?>
-			<a href="#" class="list-group-item dropdown-toggle" data-toggle="dropdown">
-			  <span class="glyphicon glyphicon-calendar"></span>
-			  Schedules
-			  <span class="badge pull-right"><?php echo $countSchedules; ?></span>
-			</a>
-			<ul class="dropdown-menu">
-				<li role="presentation" class="dropdown-header">Events</li>
-				<?php
-					$dateNow = date("Y-m-d");
-					for($i = 0; $i < $countSchedules; $i++) {
-						if ($schedulesArray[$i]['end_date'] > $dateNow)
-							echo "<li role=\"presentation\"><a role=\"menuitem\" tabindex=\"-1\" href=\"./viewschedule.php?scheduleid=".$schedulesArray[$i]['scheduleid']."\">On ".$schedulesArray[$i]['start_date']." to ".$schedulesArray[$i]['end_date']." from ".$schedulesArray[$i]['start_time']." to ".$schedulesArray[$i]['end_time']."</a></li>";
-					}
-				?>
-				<li role="presentation" class="divider"></li>
-				<li role="presentation"><a role="menuitem" tabindex="-1" href="./addschedule.php">Schedule an Event</a></li>
-          </ul>
-		</li>		
-	</ul>
-</div>
+<?php
+include './rightnavigationbar.php';
+?>
 <?php
 include './footer.php';
 include './foot.php';

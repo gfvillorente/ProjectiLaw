@@ -1,0 +1,1 @@
+LOAD DATA LOCAL INFILE 'C:/xampp/htdocs/trunk/RanData.csv' INTO TABLE ilaw.poweranalyzer FIELDS TERMINATED BY ',' ENCLOSED BY '"' LINES TERMINATED BY '\n';
